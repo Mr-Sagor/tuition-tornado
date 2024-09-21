@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Cost Calculator</title>
+</head>
+<body>
+    <h1>University Class Cost Calculator</h1>
+
+    <label for="startDate">Course Start Date:</label>
+    <input type="date" id="startDate" required>
+    <br><br>
+
+    <label for="endDate">Course End Date:</label>
+    <input type="date" id="endDate" required>
+    <br><br>
+
+    <label for="classesPerWeek">Classes per Week:</label>
+    <input type="number" id="classesPerWeek" placeholder="Enter classes per week" required>
+    <br><br>
+
+    <label for="tuitionFee">Total Tuition Fee (Tk):</label>
+    <input type="number" id="tuitionFee" placeholder="Enter total tuition fee" required>
+    <br><br>
+
+    <button onclick="calculateCostPerMinute()">Calculate</button>
+    <p id="result"></p>
+
+    <script>
+        function calculateCostPerMinute() {
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            const classesPerWeek = parseInt(document.getElementById('classesPerWeek').value);
+            const tuitionFee = parseFloat(document.getElementById('tuitionFee').value);
+            const classDuration = 75; // class duration in minutes
+
+            // Calculate the number of weeks between the start and end date
+            const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+            const totalWeeks = Math.floor(totalDays / 7);
+
+            // Calculate total classes excluding Fridays and Saturdays
+            let totalClasses = 0;
+            for (let i = 0; i <= totalDays; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const dayOfWeek = currentDate.getDay();
+                // Count classes only on Sunday to Thursday
+                if (dayOfWeek !== 5 && dayOfWeek !== 6) {
+                    totalClasses++;
+                }
+            }
+            totalClasses = Math.floor(totalClasses / (7 / classesPerWeek)); // Adjust based on classes per week
+
+            // Calculate cost per minute
+            const totalMinutes = totalClasses * classDuration;
+            const costPerMinute = tuitionFee / totalMinutes;
+
+            // Display result
+            document.getElementById('result').textContent = Cost per minute: ${costPerMinute.toFixed(2)} Tk;
+        }
+    </script>
+</body>
+</html>
